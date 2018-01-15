@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html ng-app="fundosApp">
+<head>
+    <meta charset="utf-8" />
+    <title>Lista de Fundos</title>
+    <meta http-equiv="content-language" content="pt-br" />
+    <!-- start foundation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <!-- end foundation -->
+    <link rel="stylesheet" type="text/css" media="screen" href="css/app.css" />
+    <!-- start scripts angular -->
+   <script src="lib/angular-1.5.9/angular.min.js"></script>
+   <script src="js/app.js"></script>
+   <script src="js/filters.js"></script>
+   <!-- end scripts angular -->
+</head>
+
+<!-- /////////////////////////////////////////////////////////////// -->
+
+<body>
+    <!-- start banner -->
+    <div class="callout large primary" id="fundo">
+        <div class="row column text-center">
+            <h1 class="titulo">Lista de Fundos de Investimento</h1><br>
+            <h5 class="subtitulo">Conheça a nossa lista de fundos</h5>
+        </div>
+    </div>
+    <!-- end banner -->
+
+
+<!-- /////////////////////////////////////////////////////////////// -->
+
+
+    <div class="row" id="content" ng-controller="FundosCtrl">
+        <div class="medium-9 columns" >
+            <div class="blog-post" >
+                <div class="callout ">
+                    <input class="search" placeholder="Buscar fundo por nome" ng-model="search"><img class="icon" src="img/search.png">
+                    <img src="img/perf_risco.png">
+                </div>   
+                <div class="geral ">
+                    <table class="indice">
+                        <thead>
+                            <tr>
+                                <th class="list fundo_nome align_bottom">Fundo</th>
+                                <th class="list fundo_data align_bottom">Data da cota</th>
+                                <th class="list fundo_mes align_bottom">Mês (%)</th>
+                                <th class="list fundo_ano align_bottom">2016 (%)</th>
+                                <th class="list fundo_12m align_bottom">12M (%)</th>
+                                <th class="list fundo_min align_bottom">Aplicação mínima (R$)</th>
+                                <th class="list fundo_resg align_bottom">Prazo do resgate</th>
+                                <th class="list fundo_apli align_bottom">Aplicar</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="tab risco{{fundo.specification.fund_risk_profile.score_range_order}}" ng-repeat="fundo in fundos | filter:search">
+                        <tbody>
+                            <input id="tab-{{fundo.id}}" type="checkbox" name="tabs">                   
+                            <label for="tab-{{fundo.id}}">
+                                <table class="tablemod">
+                                    <tr class="line " >
+                                        <td class="list fundo_nome">{{fundo.simple_name}}
+                                        <div class="list fundo_clas">{{fundo.specification.fund_macro_strategy.name}}</div>
+                                        </td>
+                                        <td class="list undo_data">{{fundo.quota_date | date: 'dd/MM/yyyy'}}</td>
+                                        <td class="list fundo_mes">{{fundo.profitabilities.month}}</td>
+                                        <td class="list fundo_ano">{{fundo.profitabilities.year}}</td>
+                                        <td class="list fundo_12m">{{fundo.profitabilities.m12}}</td>
+                                        <td class="list undo_min">{{fundo.operability.minimum_initial_application_amount}}</td>
+                                        <td class="list fundo_resg"><a href="#" title="{{fundo.operability.retrieval_liquidation_days_str}}"><img src="img/info.jpg"></a></td>
+                                        <td class="list fundo_apli"><a href="#"><img src="img/apli.jpg"></a></td>
+                                    </tr>
+                                </table>
+                            </label>
+                            <div class="tab-content">
+                                <div class="row">
+                                    <div class="large-6 columns">
+                                        <img  src="img/perf.png">
+                                    </div>
+                                    <div class="large-6 columns">
+                                        <p><b>Cotização da aplicação: </b>{{fundo.operability.anticipated_retrieval_quotation_days_str}}</p>
+                                        <p><b>Cotização do resgate: </b>{{fundo.operability.retrieval_quotation_days_str}}</p>
+                                        <p><b>Liquidação do resgate: </b>{{fundo.operability.retrieval_liquidation_days_str}}</p>
+                                        <p><b>Taxa de administração: </b>{{fundo.fees.maximum_administration_fee}}</p>
+                                        <br>
+                                        <p><a class="link_info" target="_content" href="https://www.youtube.com/watch?v=AQmGdkbGL04">Conheça mais informações sobre este fundo</a></p>
+                                        <br>
+                                        <br>
+                                        <p><b>CNPJ do fundo: </b>{{fundo.cnpj}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </tbody>
+                    </div>  
+                </div>
+            </div>
+            <div class="medium-4" >
+                    <img class="legend" src="img/legend.png">
+            </div>  
+        </div>
+        <div class="medium-3 columns" data-sticky-container >
+            <div class="sticky" data-sticky data-anchor="content">
+                    <div class="geral ">
+                        <div class="tabclassificacaotop">
+                            <input type="checkbox" data-ng-model='types.Renda Fixa'>&nbsp;&nbsp;&nbsp;Renda Fixa
+                        </div>
+                    <div class="tabclassificacao">
+                        <input type="checkbox" data-ng-model='types.Renda Fixa'>&nbsp;&nbsp;&nbsp;Indexado Soberano
+                    </div>
+                    <div class="tabclassificacao">
+                        <input type="checkbox" data-ng-model='types.Referenciado'>&nbsp;&nbsp;&nbsp;Renda Fixa
+                    </div>
+                    <div class="tabclassificacao">
+                        <input type="checkbox" data-ng-model='types.Multimercado'>&nbsp;&nbsp;&nbsp;Renda Fixa Crédito Privado
+                    </div>
+                    <div class="tabclassificacao">
+                        <input type="checkbox" data-ng-model='types.Ações'>&nbsp;&nbsp;&nbsp;Crédito Privado High Yield
+                    </div>
+                    <div class="tabclassificacao">
+                        <input type="checkbox" data-ng-model='types.Direito Creditório'>&nbsp;&nbsp;&nbsp;Renda Fixa Inflação Soberano
+                    </div>
+                    <div class="tabclassificacao">
+                            <input type="checkbox" data-ng-model='types.Direito Creditório'>&nbsp;&nbsp;&nbsp;Inflação Crédito Privado
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+<!-- /////////////////////////////////////////////////////////////// -->
+
+    <!-- start foundation -->
+    <script src="lib/jquery-2.1.4.min.js"></script>
+    <script src="lib/foundation.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+    <!-- end foundation -->
+
+</body>
+</html>
